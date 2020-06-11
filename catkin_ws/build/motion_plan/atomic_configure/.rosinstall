@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ilan/101/robots/i214/catkin_ws/devel/.private/motion_plan/setup.sh

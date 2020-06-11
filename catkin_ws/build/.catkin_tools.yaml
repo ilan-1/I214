@@ -1,0 +1,6 @@
+devel_space: /home/ilan/101/robots/i214/catkin_ws/devel
+install: false
+install_space: /home/ilan/101/robots/i214/catkin_ws/install
+profile: default
+source_space: /home/ilan/101/robots/i214/catkin_ws/src
+workspace: /home/ilan/101/robots/i214/catkin_ws

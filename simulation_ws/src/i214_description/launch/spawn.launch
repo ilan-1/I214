@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find i214_description)/urdf/i214.xacro'"/>
+
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0.5"/>
+
+  <node name="i214_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model i214 -x $(arg x) -y $(arg y) -z $(arg z)" />
+</launch>

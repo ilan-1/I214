@@ -1,0 +1,8 @@
+prefix=/home/ilan/101/robots/i214/simulation_ws/install
+
+Name: i214_description
+Description: Description of i214_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

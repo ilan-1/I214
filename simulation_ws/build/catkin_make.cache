@@ -1,0 +1,2 @@
+i214_description
+-DCATKIN_DEVEL_PREFIX=/home/ilan/101/robots/i214/simulation_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ilan/101/robots/i214/simulation_ws/install -G Unix Makefiles
