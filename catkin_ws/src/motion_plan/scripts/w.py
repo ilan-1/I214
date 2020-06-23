@@ -19,7 +19,7 @@ pub = None
 # machine state
 state = 0
 # obstacle coordinate list
-ob = np.array[[0.0,0.0],[0.0,0.0],[0.0,0.0],[0.0,0.0],[0.0,0.0]]
+ob = np.array([[0.0,0.0],[0.0,0.0],[0.0,0.0],[0.0,0.0],[0.0,0.0]])
 
 i=0
 
@@ -30,6 +30,8 @@ class param:
         self.dist_precision = 0.8
         self.max_speed = 0.4  # [m/s]
         self.min_speed = -0.3  # [m/s]
+        self.max_accel = 5
+        self.max_dyawrate = 1000.0 * math.pi / 180.0
         self.max_yawrate = 40.0 * math.pi / 180.0  # [rad/s]
         self.v_reso = 0.2  # [m/s]
         self.yawrate_reso = 4 * math.pi / 180.0  # [rad/s]
@@ -86,7 +88,7 @@ def fix_yaw(goal,param):
 
 def find_obs(msg):
     global state_v, ob
-    ob = np.array[[np.inf,np.inf],[np.inf,np.inf],[np.inf,np.inf],[np.inf,np.inf],[np.inf,np.inf]]
+    ob = np.array([[np.inf,np.inf],[np.inf,np.inf],[np.inf,np.inf],[np.inf,np.inf],[np.inf,np.inf]])
     region = {'1':min(min(msg.ranges[:119]), 10.0),
                 '2':min(min(msg.ranges[120:240]), 10.0),
                 '3':min(min(msg.ranges[241:360]), 10.0),
@@ -176,7 +178,7 @@ def calc_to_goal_cost(trajectory, goal):
 
     return cost
 
-def calc_control_and_trajectory(x, param, goal, ob):
+def calc_control_and_trajectory(x,dw, param, goal, ob):
 #  calculation final input with dynamic window
     x_init = x[:]
     min_cost = float("inf")
@@ -184,8 +186,8 @@ def calc_control_and_trajectory(x, param, goal, ob):
     best_trajectory = np.array([x])
 
     # evaluate all trajectory with sampled input in dynamic window
-    for v in np.arange(param.min_speed,param.max_speed, param.v_reso):
-        for o in np.arange(-param.max_yawrate, param.max_yawrate, param.yawrate_reso):
+    for v in np.arange(dw[0], dw[1], param.v_reso):
+        for o in np.arange(dw[2], dw[3], param.yawrate_reso):
 
             trajectory = predict_trajectory(x_init, v, o, param)
 
@@ -205,10 +207,33 @@ def calc_control_and_trajectory(x, param, goal, ob):
     print(best_u)
     return best_u, best_trajectory
 
+def calc_dynamic_window(x, config):
+    """
+    calculation dynamic window based on current state x
+    """
+
+    # Dynamic window from robot specification
+    Vs = [config.min_speed, config.max_speed,
+          -config.max_yawrate, config.max_yawrate]
+
+    # Dynamic window from motion model
+    Vd = [x[3] - config.max_accel * config.dt,
+          x[3] + config.max_accel * config.dt,
+          x[4] - config.max_dyawrate * config.dt,
+          x[4] + config.max_dyawrate * config.dt]
+
+    #  [vmin, vmax, yaw_rate min, yaw_rate max]
+    dw = [max(Vs[0], Vd[0]), min(Vs[1], Vd[1]),
+          max(Vs[2], Vd[2]), min(Vs[3], Vd[3])]
+    print(dw)
+    return dw
+
+
 def dwa_control(x, param, goal, ob):
 # DWA control
     global state , pub
-    u, trajectory = calc_control_and_trajectory(x, param, goal, ob)
+    dw = calc_dynamic_window(x, param)
+    u, trajectory = calc_control_and_trajectory(x,dw, param, goal, ob)
 
     twist_msg = Twist()
     twist_msg.linear.x = u[0]

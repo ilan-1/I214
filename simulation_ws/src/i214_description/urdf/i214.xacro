@@ -25,6 +25,19 @@
       </geometry>
       <material name="blue"/>
     </visual>
+    <!-- camera mount -->
+    <collision name="collision_camera_mount">
+      <geometry>
+        <box size="0.1 0.3 0.1"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+      <geometry>
+        <box size="0.1 0.3 0.1"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
     <!-- caster front -->
     <collision name="caster_front_collision">
       <origin rpy=" 0 0 0" xyz="0.35 0 -0.05"/>
@@ -48,6 +61,37 @@
         <sphere radius="0.05"/>
       </geometry>
     </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0 0 0.15" rpy="0 0 0"/>
+    <parent link="link_chassis"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
   </link>
 
   <link name="sensor_laser">

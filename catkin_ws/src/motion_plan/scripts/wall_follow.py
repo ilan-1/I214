@@ -94,12 +94,12 @@ def take_action():
 def find_wall():
     msg = Twist()
     msg.linear.x = 0.2
-    msg.angular.z = -0.3
+    msg.angular.z = 0.3
     return msg
 
 def turn_left():
     msg = Twist()
-    msg.angular.z = 0.3
+    msg.angular.z = -0.3
     return msg
 
 def follow_the_wall():
@@ -118,13 +118,13 @@ def main():
 
     sub = rospy.Subscriber('/i214/laser/scan', LaserScan, clbk_laser)
 
-    #srv = rospy.Service('wall_follower_switch', SetBool, wall_follower_switch)
+    srv = rospy.Service('wall_follower_switch', SetBool, wall_follower_switch)
 
-    rate = rospy.Rate(20)
+    rate = rospy.Rate(10)
     while not rospy.is_shutdown():
-        #if not active_:
-        #    rate.sleep()
-        #    continue
+        if not active_:
+            rate.sleep()
+            continue
 
         msg = Twist()
         if state_ == 0:
