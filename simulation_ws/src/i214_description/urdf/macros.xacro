@@ -5,18 +5,18 @@
             <inertial>
               <mass value="0.2"/>
               <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
-              <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
+              <inertia ixx="0.001166666666" ixy="0" ixz="0" iyy="0.0011666666666" iyz="0" izz="0.0001666666"/>
             </inertial>
             <collision name="link_right_wheel_collision">
               <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
               <geometry>
-                <cylinder length="0.04" radius="0.1"/>
+                <cylinder length="0.02" radius="0.1"/>
               </geometry>
             </collision>
             <visual name="${name}_visual">
               <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
               <geometry>
-                <cylinder length="0.04" radius="0.1"/>
+                <cylinder length="0.02" radius="0.1"/>
               </geometry>
             </visual>
         </link>
@@ -29,14 +29,14 @@
         <parent link="link_chassis"/>
         <axis rpy="0 0 0" xyz="0 1 0"/>
         <limit effort="10000" velocity="1000"/>
-        <joint_properties damping="1.0" friction="1.0"/>
+        <joint_properties damping="0.0" friction="0.0"/>
       </joint>
     </macro>
 
-    <macro name="cylinder_inertia" params="mass r l">
-        <inertia  ixx="${mass*(3*r*r+l*l)/12}" ixy = "0" ixz = "0"
-                  iyy="${mass*(3*r*r+l*l)/12}" iyz = "0"
-                  izz="${mass*(r*r)/2}" />
+    <macro name="cylinder_inertia" params="m r h">
+        <inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+                  iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+                  izz="${m*(r*r)/2}" />
     </macro>
 
 </robot>

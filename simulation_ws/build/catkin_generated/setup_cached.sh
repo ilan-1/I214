@@ -8,5 +8,7 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/ilan/101/robots/i214/simulation_ws/devel:$CMAKE_PREFIX_PATH"
-export PWD="/home/ilan/101/robots/i214/simulation_ws/build"
+export LD_LIBRARY_PATH="/home/ilan/101/robots/i214/simulation_ws/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/ilan/101/robots/i214/simulation_ws/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PWD="/home/ilan/101/flip/i214/simulation_ws/build"
 export ROS_PACKAGE_PATH="/home/ilan/101/robots/i214/simulation_ws/src:$ROS_PACKAGE_PATH"
